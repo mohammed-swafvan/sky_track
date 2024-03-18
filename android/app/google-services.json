@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "889492393253",
+    "firebase_url": "https://sky-tracker-5dbb6-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sky-tracker-5dbb6",
+    "storage_bucket": "sky-tracker-5dbb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889492393253:android:d950eae42827c02bf81ecc",
+        "android_client_info": {
+          "package_name": "in.swafvan.sky_track"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMIw30HGUJLspokTd7XoSag-vMRXU_55s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
