@@ -9,10 +9,12 @@ class HeaderWidget extends StatelessWidget {
     required this.onBackButton,
     required this.title,
     required this.subtitle,
+    this.onLogOut,
   });
   final VoidCallback onBackButton;
   final String title;
   final String subtitle;
+  final VoidCallback? onLogOut;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,16 @@ class HeaderWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const Spacer(),
+                if (onLogOut != null)
+                  IconButton(
+                    onPressed: onLogOut,
+                    icon: const Icon(
+                      Iconsax.logout,
+                      size: 28,
+                      color: kWhiteColor,
+                    ),
+                  ),
               ],
             ),
           ),

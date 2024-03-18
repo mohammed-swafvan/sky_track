@@ -17,4 +17,13 @@ class SignInFailure extends SignInState {
   const SignInFailure({this.message});
 }
 
+class SignOutSuccess extends SignInState {}
+
+class SignOutFailure extends SignInState {
+  final String? message;
+
+  const SignOutFailure({this.message});
+}
+
 class SignInProcess extends SignInState {}
+class SignOutProcess extends SignInState {}

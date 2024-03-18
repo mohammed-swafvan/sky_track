@@ -25,7 +25,15 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     });
 
     on<SignOutRequired>((event, emit) async {
-      await _authService.logOut();
+      emit(SignOutProcess());
+      try {
+        await _authService.logOut();
+        emit(SignOutSuccess());
+      } on FirebaseAuthException catch (e) {
+        emit(SignOutFailure(message: e.code));
+      } catch (e) {
+        emit(const SignOutFailure());
+      }
     });
   }
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart' as fornavigate;
+import 'package:sky_track/application/sign_in/sign_in_bloc.dart';
 import 'package:sky_track/application/weather/weather_bloc.dart';
 import 'package:sky_track/core/colors.dart';
 import 'package:sky_track/core/constants.dart';
 import 'package:sky_track/domain/user/models/user_model.dart';
+import 'package:sky_track/presentation/utils/alert_dialog_uilts.dart';
 import 'package:sky_track/presentation/weather/widgets/user_data_card_widget.dart';
+import 'package:sky_track/presentation/welcome/welcome_screen.dart';
 import 'package:sky_track/presentation/widgets/custom_scaffold.dart';
 import 'package:sky_track/presentation/widgets/header_widget.dart';
 
@@ -34,10 +38,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      header: HeaderWidget(
-        onBackButton: () => Navigator.of(context).pop(),
-        title: "Weather",
-        subtitle: "You can explore user details with the weather here!",
+      header: BlocListener<SignInBloc, SignInState>(
+        listener: (context, state) {
+          if (state is SignOutSuccess) {
+            fornavigate.Get.off(
+              () => const WelcomeScreen(),
+            );
+          }
+        },
+        child: HeaderWidget(
+          onBackButton: () => Navigator.of(context).pop(),
+          onLogOut: () {
+            AlertDialoqUtils.customAlertDialoque(
+              context: context,
+              onTap: () {
+                context.read<SignInBloc>().add(
+                      const SignOutRequired(),
+                    );
+              },
+              title: "Sign Out",
+              content: "Are you sure you want to sign out",
+            );
+          },
+          title: "Weather",
+          subtitle: "You can explore user details with the weather here!",
+        ),
       ),
       body: BlocBuilder<WeatherBloc, WeatherState>(
         builder: (context, state) {
