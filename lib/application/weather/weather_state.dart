@@ -7,9 +7,9 @@ final class WeatherInitial extends WeatherState {}
 final class WeatherLoadingState extends WeatherState {}
 
 final class WeatherSucccessState extends WeatherState {
-  final double temperature;
+  final WeatherData weatherData;
 
-  WeatherSucccessState({required this.temperature});
+  WeatherSucccessState({required this.weatherData});
 }
 
 

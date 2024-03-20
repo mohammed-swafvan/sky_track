@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as fornavigate;
 import 'package:sky_track/application/sign_in/sign_in_bloc.dart';
 import 'package:sky_track/application/weather/weather_bloc.dart';
-import 'package:sky_track/core/colors.dart';
 import 'package:sky_track/core/constants.dart';
 import 'package:sky_track/domain/user/models/user_model.dart';
 import 'package:sky_track/presentation/utils/alert_dialog_uilts.dart';
+import 'package:sky_track/presentation/weather/widgets/switch_card_widget.dart';
 import 'package:sky_track/presentation/weather/widgets/user_data_card_widget.dart';
 import 'package:sky_track/presentation/welcome/welcome_screen.dart';
 import 'package:sky_track/presentation/widgets/custom_scaffold.dart';
@@ -22,7 +22,6 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   late WeatherBloc weatherBloc;
-  bool isSwithed = false;
 
   @override
   void initState() {
@@ -77,65 +76,26 @@ class _WeatherScreenState extends State<WeatherScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserDataCardWidget(label: "First Name", text: widget.user.firstName),
-                  kHeight25,
-                  UserDataCardWidget(label: "Last Name", text: widget.user.lastName),
-                  kHeight25,
-                  UserDataCardWidget(label: "Email Address", text: widget.user.email),
-                  kHeight25,
-                  UserDataCardWidget(label: "Location", text: widget.user.city),
-                  kHeight25,
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      const Text(
-                        "Weather",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: kBlackColor,
+                      Expanded(
+                        child: UserDataCardWidget(
+                          label: "Full Name",
+                          text: "${widget.user.firstName} ${widget.user.lastName}",
                         ),
                       ),
-                      kHeight05,
-                      Material(
-                        elevation: 5,
-                        shadowColor: kLightGrey,
-                        borderRadius: kBorderRadius10,
-                        child: Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            color: kCardColor,
-                            borderRadius: kBorderRadius10,
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              isSwithed ? "${state.temperature.floor()}°C" : "--°C",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: kBlackColor,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: Switch.adaptive(
-                              activeColor: kWhiteColor,
-                              activeTrackColor: kPrimaryColor,
-                              inactiveThumbColor: kPrimaryColor.withOpacity(0.8),
-                              trackOutlineColor: MaterialStateProperty.all<Color>(kPrimaryColor.withOpacity(0.8)),
-                              inactiveTrackColor: Colors.transparent,
-                              value: isSwithed,
-                              onChanged: (val) {
-                                setState(() {
-                                  isSwithed = val;
-                                });
-                              },
-                            ),
-                          ),
+                      kWidth10,
+                      Expanded(
+                        child: UserDataCardWidget(
+                          label: "Address",
+                          text: widget.user.email,
+                          city: widget.user.city,
                         ),
                       ),
                     ],
                   ),
+                  kHeight25,
+                  SwitchCardWidget(currentWeather: state.weatherData.getCurrentWeather()),
                 ],
               ),
             );
