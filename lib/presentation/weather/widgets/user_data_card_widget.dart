@@ -37,7 +37,7 @@ class UserDataCardWidget extends StatelessWidget {
             Text(
               text,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: kBlackColor,
               ),

@@ -52,6 +52,7 @@ dependencies:
   http: ^1.2.1
   another_flushbar: ^1.12.30
   shared_preferences: ^2.2.2
+  sleek_circular_slider: ^2.0.1
 
 
 dev_dependencies:

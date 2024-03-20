@@ -6,8 +6,10 @@ import 'package:sky_track/application/weather/weather_bloc.dart';
 import 'package:sky_track/core/constants.dart';
 import 'package:sky_track/domain/user/models/user_model.dart';
 import 'package:sky_track/presentation/utils/alert_dialog_uilts.dart';
+import 'package:sky_track/presentation/weather/widgets/current_weather_card.dart';
 import 'package:sky_track/presentation/weather/widgets/switch_card_widget.dart';
 import 'package:sky_track/presentation/weather/widgets/user_data_card_widget.dart';
+import 'package:sky_track/presentation/weather/widgets/weather_comfort_level_widget.dart';
 import 'package:sky_track/presentation/welcome/welcome_screen.dart';
 import 'package:sky_track/presentation/widgets/custom_scaffold.dart';
 import 'package:sky_track/presentation/widgets/header_widget.dart';
@@ -63,53 +65,64 @@ class _WeatherScreenState extends State<WeatherScreen> {
           subtitle: "You can explore user details with the weather here!",
         ),
       ),
-      body: BlocBuilder<WeatherBloc, WeatherState>(
-        builder: (context, state) {
-          if (state is WeatherLoadingState || state is WeatherInitial) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is WeatherSucccessState) {
-            return Container(
-              padding: kEdgeInsetsHoriz16.copyWith(top: 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          fetchWeatherData();
+        },
+        child: BlocBuilder<WeatherBloc, WeatherState>(
+          builder: (context, state) {
+            if (state is WeatherLoadingState || state is WeatherInitial) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is WeatherSucccessState) {
+              return Container(
+                padding: kEdgeInsetsHoriz16,
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: UserDataCardWidget(
-                          label: "Full Name",
-                          text: "${widget.user.firstName} ${widget.user.lastName}",
-                        ),
+                      CurrentWeatherCard(weather: state.weatherData.getCurrentWeather()),
+                      kHeight25,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: UserDataCardWidget(
+                              label: "Full Name",
+                              text: "${widget.user.firstName} ${widget.user.lastName}",
+                            ),
+                          ),
+                          kWidth10,
+                          Expanded(
+                            child: UserDataCardWidget(
+                              label: "Address",
+                              text: widget.user.email,
+                              city: widget.user.city,
+                            ),
+                          ),
+                        ],
                       ),
-                      kWidth10,
-                      Expanded(
-                        child: UserDataCardWidget(
-                          label: "Address",
-                          text: widget.user.email,
-                          city: widget.user.city,
-                        ),
-                      ),
+                      kHeight25,
+                      SwitchCardWidget(currentWeather: state.weatherData.getCurrentWeather()),
+                      kHeight25,
+                      WeatherComfortLevelWidget(weather: state.weatherData.getCurrentWeather()),
+                      kHeight25,
                     ],
                   ),
-                  kHeight25,
-                  SwitchCardWidget(currentWeather: state.weatherData.getCurrentWeather()),
-                ],
-              ),
-            );
-          }
-          if (state is WeatherErrorState) {
-            return Center(
-              child: Text(state.message),
-            );
-          }
+                ),
+              );
+            }
+            if (state is WeatherErrorState) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
 
-          return const Center(
-            child: Text('Something went wrong!'),
-          );
-        },
+            return const Center(
+              child: Text('Something went wrong!'),
+            );
+          },
+        ),
       ),
     );
   }
