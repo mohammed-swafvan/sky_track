@@ -51,8 +51,8 @@ dependencies:
   json_annotation: ^4.8.1
   http: ^1.2.1
   another_flushbar: ^1.12.30
-  shared_preferences: ^2.2.2
   sleek_circular_slider: ^2.0.1
+  flutter_secure_storage: ^9.0.0
 
 
 dev_dependencies:

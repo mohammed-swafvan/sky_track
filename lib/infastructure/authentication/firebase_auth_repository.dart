@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sky_track/domain/authentication/models/auth_model.dart';
 import 'package:sky_track/domain/authentication/auth_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FirebaseAuthRepository implements AuthService {
   final FirebaseAuth _firebaseAuth;
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   FirebaseAuthRepository({
     FirebaseAuth? firebaseAuth,
@@ -30,10 +31,8 @@ class FirebaseAuthRepository implements AuthService {
 
       newUser = newUser.copyWith(userId: credential.user!.uid);
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('uid', credential.user!.uid);
-      await prefs.setString('email', newUser.userEmail);
-      await prefs.setString('password', password);
+      await secureStorage.write(key: 'uid', value: credential.user!.uid);
+      await secureStorage.write(key: 'email', value: newUser.userEmail);
 
       return newUser;
     } catch (e) {
@@ -50,10 +49,8 @@ class FirebaseAuthRepository implements AuthService {
         password: password,
       );
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('uid', credential.user!.uid);
-      await prefs.setString('email', email);
-      await prefs.setString('password', password);
+      await secureStorage.write(key: 'uid', value: credential.user!.uid);
+      await secureStorage.write(key: 'email', value: email);
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -87,6 +84,7 @@ class FirebaseAuthRepository implements AuthService {
     try {
       await FirebaseAuth.instance.signOut();
       await _firebaseAuth.signOut();
+      await secureStorage.deleteAll();
     } catch (e) {
       log(e.toString());
       rethrow;

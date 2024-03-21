@@ -8,8 +8,9 @@ class HomeLoadingState extends HomeState {}
 
 class HomeSuccessState extends HomeState {
   final List<UserModel> users;
+  final AuthModel currentUser;
 
-  HomeSuccessState({required this.users});
+  HomeSuccessState({required this.users, required this.currentUser});
 }
 
 class HomeErrorState extends HomeState {

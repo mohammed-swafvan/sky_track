@@ -84,24 +84,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     children: [
                       CurrentWeatherCard(weather: state.weatherData.getCurrentWeather()),
                       kHeight25,
-                      Row(
-                        children: [
-                          Expanded(
-                            child: UserDataCardWidget(
-                              label: "Full Name",
-                              text: "${widget.user.firstName} ${widget.user.lastName}",
-                            ),
-                          ),
-                          kWidth10,
-                          Expanded(
-                            child: UserDataCardWidget(
-                              label: "Address",
-                              text: widget.user.email,
-                              city: widget.user.city,
-                            ),
-                          ),
-                        ],
-                      ),
+                      UserDataCardWidget(user: widget.user),
                       kHeight25,
                       SwitchCardWidget(currentWeather: state.weatherData.getCurrentWeather()),
                       kHeight25,

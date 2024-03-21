@@ -21,7 +21,8 @@ class UserCardWidget extends StatelessWidget {
     return Padding(
       padding: kEdgeInsetsHoriz16,
       child: Dismissible(
-        key: ValueKey<UserModel>(user),
+        // key: ValueKey<UserModel>(user),
+        key: Key(user.id),
         direction: DismissDirection.endToStart,
         background: Container(
           padding: const EdgeInsets.only(right: 18),

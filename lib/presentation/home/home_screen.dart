@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:sky_track/application/user/user_bloc.dart';
 import 'package:sky_track/application/weather/weather_bloc.dart';
 import 'package:sky_track/core/colors.dart';
 import 'package:sky_track/core/constants.dart';
+import 'package:sky_track/domain/authentication/models/auth_model.dart';
 import 'package:sky_track/domain/user/models/user_model.dart';
 import 'package:sky_track/infastructure/user/firebase_user_repository.dart';
 import 'package:sky_track/presentation/home/widgets/home_header_widget.dart';
@@ -56,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
             if (state is HomeSuccessState) {
+              AuthModel currentUser = state.currentUser;
+              log("From Shared Preference \n User Email:${currentUser.userEmail} \n User Uid:${currentUser.userId}");
               if (state.users.isEmpty) {
                 return Center(
                   child: IconButton(
